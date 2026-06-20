@@ -12,7 +12,8 @@
     "report": "node src/index.js report --json sample-output.json",
     "stats": "node src/index.js workspace:stats",
     "demo": "node src/index.js demo",
-    "smoke": "node src/index.js demo --json sample-output.json"
+    "smoke": "node src/index.js demo --json sample-output.json",
+    "smoke:test": "node scripts/smoke-test.js"
   },
   "keywords": [
     "nodejs",

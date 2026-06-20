@@ -56,6 +56,7 @@ async function main() {
         await handleDemo(options);
         break;
       case 'help':
+      case '--help':
         printHelp();
         break;
       default:
