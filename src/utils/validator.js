@@ -97,6 +97,43 @@ export function isCodeFilePath(filePath) {
 }
 
 /**
+ * Validates a search keyword without allowing it to be interpreted as a path.
+ *
+ * @param {unknown} keyword search term
+ * @returns {string} validated keyword with surrounding whitespace removed
+ */
+export function validateSearchKeyword(keyword) {
+  if (typeof keyword !== 'string' || keyword.trim().length === 0) {
+    throw new CliError(
+      'Missing Search Keyword',
+      'No keyword was provided for the workspace search.',
+      'Add a non-empty keyword after the search command.',
+      'node src/index.js search console'
+    );
+  }
+
+  const normalized = keyword.trim();
+  const normalizedPath = path.normalize(normalized);
+  if (
+    path.isAbsolute(normalized)
+    || normalizedPath === '..'
+    || normalizedPath.startsWith(`..${path.sep}`)
+    || normalized.includes('../')
+    || normalized.includes('..\\')
+    || normalized.includes('\0')
+  ) {
+    throw new CliError(
+      'Invalid Search Keyword',
+      'Path traversal and external file references are not allowed in workspace search.',
+      'Provide plain text to search within readable workspace code files.',
+      'node src/index.js search console'
+    );
+  }
+
+  return normalized;
+}
+
+/**
  * Validates content while preserving the exact text supplied by the user.
  *
  * @param {unknown} value content option value

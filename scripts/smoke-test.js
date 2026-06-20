@@ -24,6 +24,7 @@ const commands = [
     'node src/index.js update smoke-test.js --content "\\nconsole.log(\'updated\')"',
     ['src/index.js', 'update', 'smoke-test.js', '--content', "\nconsole.log('updated')"]
   ],
+  ['node src/index.js search smoke', ['src/index.js', 'search', 'smoke']],
   ['node src/index.js workspace:stats', ['src/index.js', 'workspace:stats']],
   ['node src/index.js history --limit 5', ['src/index.js', 'history', '--limit', '5']],
   ['node src/index.js delete smoke-test.js', ['src/index.js', 'delete', 'smoke-test.js']]
@@ -34,6 +35,7 @@ const expectedFailureCommands = [
   ['node src/index.js create', ['src/index.js', 'create']],
   ['node src/index.js update missing.js', ['src/index.js', 'update', 'missing.js']],
   ['node src/index.js delete ../package.json', ['src/index.js', 'delete', '../package.json']],
+  ['node src/index.js search', ['src/index.js', 'search']],
   ['node src/index.js unknowncommand', ['src/index.js', 'unknowncommand']]
 ];
 

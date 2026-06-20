@@ -46,6 +46,9 @@ async function main() {
       case 'delete':
         await handleDelete(positional);
         break;
+      case 'search':
+        await handleSearch(positional);
+        break;
       case 'workspace:stats':
         await handleWorkspaceStats();
         break;
@@ -148,6 +151,25 @@ async function handleDelete(positional) {
   const metadata = await fileManager.deleteFile(relativePath);
   logger.success(`Deleted ${metadata.relativePath}`);
   printFileMetadata('Deleted File', metadata);
+}
+
+async function handleSearch(positional) {
+  const [keyword] = positional;
+  const matches = await fileManager.searchFiles(keyword);
+
+  printSection(`Search Results: ${keyword}`);
+  if (matches.length === 0) {
+    console.log(`No matches found for "${keyword}" inside the workspace.`);
+    return;
+  }
+
+  console.table(
+    matches.map((match) => ({
+      File: match.relativePath,
+      Line: match.lineNumber
+    }))
+  );
+  console.log(`Found ${matches.length} matching line(s).`);
 }
 
 async function handleWorkspaceStats() {
@@ -296,12 +318,14 @@ function printHelp() {
   console.log('  update <file> --content <text>        Append to a workspace file');
   console.log('  update <file> --mode overwrite --content <text>');
   console.log('  delete <file>                         Delete a workspace file');
+  console.log('  search <keyword>                     Search readable workspace code files');
   console.log('  workspace:stats                       Display workspace statistics');
   console.log('  history --limit <number>              Display file operation history');
   console.log('  demo --json <path>                    Run a safe end-to-end demo');
   console.log('\nExamples:');
   console.log("  node src/index.js create app.js --content \"console.log('hi')\"");
   console.log('  node src/index.js update app.js --mode append --content "\\nconsole.log(process.version)"');
+  console.log('  node src/index.js search console');
   console.log('  node src/index.js report --json sample-output.json');
 }
 

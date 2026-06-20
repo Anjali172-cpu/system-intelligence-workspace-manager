@@ -142,6 +142,14 @@ Read a file:
 npm start -- read app.js
 ```
 
+Search readable code files inside the workspace (case-insensitive):
+
+```bash
+npm start -- search console
+```
+
+Search results show workspace-relative file paths and 1-based line numbers. Empty keywords and path traversal attempts are rejected, and files outside `workspace/` are never accessed.
+
 Append to a file:
 
 ```bash

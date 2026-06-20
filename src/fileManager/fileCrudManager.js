@@ -1,7 +1,13 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { formatTimestamp } from '../utils/formatter.js';
-import { CliError, isCodeFilePath, validateWorkspaceFilePath, validateWriteMode } from '../utils/validator.js';
+import {
+  CliError,
+  isCodeFilePath,
+  validateSearchKeyword,
+  validateWorkspaceFilePath,
+  validateWriteMode
+} from '../utils/validator.js';
 
 /**
  * Manages code files inside a dedicated workspace directory.
@@ -153,6 +159,45 @@ export class FileCrudManager {
     } catch (error) {
       throw this.#normalizeFileError(error, safePath, operation);
     }
+  }
+
+  /**
+   * Searches readable workspace code files for a case-insensitive keyword.
+   *
+   * @param {string} keyword text to find
+   * @returns {Promise<Array<{ relativePath: string, lineNumber: number }>>} matching lines
+   */
+  async searchFiles(keyword) {
+    const safeKeyword = validateSearchKeyword(keyword);
+    const normalizedKeyword = safeKeyword.toLocaleLowerCase();
+    await this.initialize();
+    const files = (await this.#listFiles(this.workspaceDirectory)).filter(isCodeFilePath);
+    const matches = [];
+
+    for (const absolutePath of files) {
+      let content;
+
+      try {
+        content = await fs.readFile(absolutePath, 'utf8');
+      } catch (error) {
+        if (['EACCES', 'EPERM', 'ENOENT'].includes(error.code)) {
+          continue;
+        }
+        throw error;
+      }
+
+      const lines = content.split(/\r?\n/);
+      for (let index = 0; index < lines.length; index += 1) {
+        if (lines[index].toLocaleLowerCase().includes(normalizedKeyword)) {
+          matches.push({
+            relativePath: path.relative(this.workspaceDirectory, absolutePath),
+            lineNumber: index + 1
+          });
+        }
+      }
+    }
+
+    return matches;
   }
 
   /**
