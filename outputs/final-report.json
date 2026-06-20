@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-06-20T09:40:45.983Z",
+  "systemInfo": {
+    "osType": "Darwin",
+    "osRelease": "24.5.0",
+    "cpuArchitecture": "arm64",
+    "cpuCoreCount": 8,
+    "hostname": "Anjalis-MacBook-Air.local",
+    "nodeVersion": "v24.16.0",
+    "platform": "darwin",
+    "homeDirectory": "/Users/anjali",
+    "currentUser": "anjali",
+    "systemUptime": "0d 20h 8m",
+    "totalMemory": "16 GB",
+    "freeMemory": "656 MB"
+  },
+  "environmentVariables": {
+    "PATH": "/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin",
+    "HOME": "/Users/anjali",
+    "USER": "anjali",
+    "SHELL": "/bin/zsh",
+    "TEMP": "Not Available"
+  },
+  "healthSummary": {
+    "status": "Critical",
+    "memory": {
+      "totalBytes": 17179869184,
+      "freeBytes": 687947776,
+      "usedBytes": 16491921408,
+      "usedPercentage": 96,
+      "status": "Critical Usage"
+    },
+    "cpu": {
+      "coreCount": 8,
+      "architecture": "arm64"
+    }
+  },
+  "workspaceStatistics": {
+    "workspaceDirectory": "/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/workspace",
+    "totalFiles": 1,
+    "totalSizeBytes": 154,
+    "largestFile": {
+      "relativePath": "demo/hello.js",
+      "sizeBytes": 154,
+      "createdAt": "2026-06-20T08:40:55.586Z",
+      "modifiedAt": "2026-06-20T08:40:55.588Z"
+    },
+    "files": [
+      {
+        "relativePath": "demo/hello.js",
+        "sizeBytes": 154,
+        "createdAt": "2026-06-20T08:40:55.586Z",
+        "modifiedAt": "2026-06-20T08:40:55.588Z"
+      }
+    ]
+  }
+}

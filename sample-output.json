@@ -1,0 +1,109 @@
+{
+  "reportMetadata": {
+    "reportId": "34e0d35f-9b2b-4692-9790-451eaf648405",
+    "generatedTimestamp": "2026-06-20T09:56:05.072Z",
+    "cliVersion": "1.0.0"
+  },
+  "generatedAt": "2026-06-20T09:56:05.072Z",
+  "systemInfo": {
+    "osType": "Darwin",
+    "osRelease": "24.5.0",
+    "cpuArchitecture": "arm64",
+    "cpuCoreCount": 8,
+    "hostname": "Anjalis-MacBook-Air.local",
+    "nodeVersion": "v24.16.0",
+    "platform": "darwin",
+    "homeDirectory": "/Users/anjali",
+    "currentUser": "anjali",
+    "systemUptime": "Not Available",
+    "totalMemory": "16 GB",
+    "freeMemory": "261 MB"
+  },
+  "environmentVariables": {
+    "PATH": "/Users/anjali/.codex/tmp/arg0/codex-arg0QuuDjP:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin:/Applications/Codex.app/Contents/Resources",
+    "HOME": "/Users/anjali",
+    "USER": "anjali",
+    "SHELL": "/bin/zsh",
+    "TEMP": "Not Available"
+  },
+  "healthSummary": {
+    "status": "Critical",
+    "memory": {
+      "totalBytes": 17179869184,
+      "freeBytes": 273399808,
+      "usedBytes": 16906469376,
+      "usedPercentage": 98.41,
+      "status": "Critical Usage"
+    },
+    "cpu": {
+      "coreCount": 8,
+      "architecture": "arm64"
+    }
+  },
+  "systemHealthScore": {
+    "score": 24,
+    "category": "Critical",
+    "components": {
+      "memoryScore": 8,
+      "uptimeScore": 70,
+      "uptimeAvailable": false
+    }
+  },
+  "workspaceStatistics": {
+    "workspaceDirectory": "/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/workspace",
+    "totalFiles": 2,
+    "totalSizeBytes": 183,
+    "largestFile": {
+      "relativePath": "demo/hello.js",
+      "sizeBytes": 154,
+      "createdAt": "2026-06-20T08:40:55.586Z",
+      "modifiedAt": "2026-06-20T08:40:55.588Z"
+    },
+    "insights": {
+      "mostRecentlyModifiedFile": {
+        "relativePath": "test.js",
+        "sizeBytes": 29,
+        "createdAt": "2026-06-20T09:40:51.602Z",
+        "modifiedAt": "2026-06-20T09:40:51.602Z"
+      },
+      "largestFile": {
+        "relativePath": "demo/hello.js",
+        "sizeBytes": 154,
+        "createdAt": "2026-06-20T08:40:55.586Z",
+        "modifiedAt": "2026-06-20T08:40:55.588Z"
+      },
+      "averageFileSizeBytes": 91.5,
+      "totalCodeFiles": 2
+    },
+    "files": [
+      {
+        "relativePath": "demo/hello.js",
+        "sizeBytes": 154,
+        "createdAt": "2026-06-20T08:40:55.586Z",
+        "modifiedAt": "2026-06-20T08:40:55.588Z"
+      },
+      {
+        "relativePath": "test.js",
+        "sizeBytes": 29,
+        "createdAt": "2026-06-20T09:40:51.602Z",
+        "modifiedAt": "2026-06-20T09:40:51.602Z"
+      }
+    ]
+  },
+  "workspaceInsights": {
+    "mostRecentlyModifiedFile": {
+      "relativePath": "test.js",
+      "sizeBytes": 29,
+      "createdAt": "2026-06-20T09:40:51.602Z",
+      "modifiedAt": "2026-06-20T09:40:51.602Z"
+    },
+    "largestFile": {
+      "relativePath": "demo/hello.js",
+      "sizeBytes": 154,
+      "createdAt": "2026-06-20T08:40:55.586Z",
+      "modifiedAt": "2026-06-20T08:40:55.588Z"
+    },
+    "averageFileSizeBytes": 91.5,
+    "totalCodeFiles": 2
+  }
+}

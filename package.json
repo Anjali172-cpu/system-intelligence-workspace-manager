@@ -1,0 +1,30 @@
+{
+  "name": "system-intelligence-workspace-manager",
+  "version": "1.0.0",
+  "description": "Production-quality Node.js CLI for system intelligence reporting and workspace code file management.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "siwm": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "report": "node src/index.js report --json sample-output.json",
+    "stats": "node src/index.js workspace:stats",
+    "demo": "node src/index.js demo",
+    "smoke": "node src/index.js demo --json sample-output.json"
+  },
+  "keywords": [
+    "nodejs",
+    "cli",
+    "system-info",
+    "workspace",
+    "crud",
+    "hackathon"
+  ],
+  "author": "Codex Hackathon Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
