@@ -1,10 +1,10 @@
 {
   "reportMetadata": {
-    "reportId": "96d779c3-73dd-4a75-ba90-ed5a0ebcb154",
-    "generatedTimestamp": "2026-06-20T13:13:27.799Z",
+    "reportId": "a7108da5-dbba-4204-b864-22e1eaf3de4f",
+    "generatedTimestamp": "2026-06-20T13:21:58.450Z",
     "cliVersion": "1.0.0"
   },
-  "generatedAt": "2026-06-20T13:13:27.799Z",
+  "generatedAt": "2026-06-20T13:21:58.450Z",
   "systemInfo": {
     "osType": "Darwin",
     "osRelease": "24.5.0",
@@ -15,12 +15,12 @@
     "platform": "darwin",
     "homeDirectory": "/Users/anjali",
     "currentUser": "anjali",
-    "systemUptime": "0d 23h 40m",
+    "systemUptime": "0d 23h 49m",
     "totalMemory": "16 GB",
-    "freeMemory": "712 MB"
+    "freeMemory": "1.3 GB"
   },
   "environmentVariables": {
-    "PATH": "/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/node_modules/.bin:/Users/anjali/Documents/Codex/2026-06-20/node_modules/.bin:/Users/anjali/Documents/Codex/node_modules/.bin:/Users/anjali/Documents/node_modules/.bin:/Users/anjali/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin",
+    "PATH": "/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/node_modules/.bin:/Users/anjali/Documents/Codex/2026-06-20/node_modules/.bin:/Users/anjali/Documents/Codex/node_modules/.bin:/Users/anjali/Documents/node_modules/.bin:/Users/anjali/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/node_modules/.bin:/Users/anjali/Documents/Codex/2026-06-20/node_modules/.bin:/Users/anjali/Documents/Codex/node_modules/.bin:/Users/anjali/Documents/node_modules/.bin:/Users/anjali/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin",
     "HOME": "/Users/anjali",
     "USER": "anjali",
     "SHELL": "/bin/zsh",
@@ -30,9 +30,9 @@
     "status": "Critical",
     "memory": {
       "totalBytes": 17179869184,
-      "freeBytes": 746684416,
-      "usedBytes": 16433184768,
-      "usedPercentage": 95.65,
+      "freeBytes": 1374568448,
+      "usedBytes": 15805300736,
+      "usedPercentage": 92,
       "status": "Critical Usage"
     },
     "cpu": {
@@ -41,10 +41,10 @@
     }
   },
   "systemHealthScore": {
-    "score": 42,
+    "score": 52,
     "category": "Poor",
     "components": {
-      "memoryScore": 22,
+      "memoryScore": 36,
       "uptimeScore": 100,
       "uptimeAvailable": true
     }

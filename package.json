@@ -13,7 +13,8 @@
     "stats": "node src/index.js workspace:stats",
     "demo": "node src/index.js demo",
     "smoke": "node src/index.js demo --json sample-output.json",
-    "smoke:test": "node scripts/smoke-test.js"
+    "smoke:test": "node scripts/smoke-test.js",
+    "reliability:report": "node scripts/reliability-report.js"
   },
   "keywords": [
     "nodejs",

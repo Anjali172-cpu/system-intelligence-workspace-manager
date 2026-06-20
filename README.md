@@ -158,6 +158,16 @@ The suite includes positive tests that must exit successfully and negative tests
 
 Each command is labeled `PASS` or `FAIL`. The runner continues through the full command sequence for useful diagnostics and exits with status code `1` if any check fails. It manages only the dedicated `workspace/smoke-test.js` fixture and writes its report to `outputs/smoke-report.json`.
 
+## Reliability Report
+
+Generate a machine-readable reliability summary from the complete smoke test suite:
+
+```bash
+npm run reliability:report
+```
+
+The command displays total, passed, and failed test counts with a reliability percentage, then writes `outputs/reliability-report.json`. The report records coverage of help, system reporting, JSON export, CRUD operations, workspace statistics, operation history, error handling, and path safety validation. It exits with status code `1` if the smoke suite fails.
+
 ## Strategy
 
 ### Architecture Choice
