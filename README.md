@@ -52,28 +52,60 @@ project/
 
 ## Code Flow
 
+### Step-by-Step Execution
+
+1. **User executes a CLI command.** The process begins with a command such as `report`, `create`, `read`, `update`, `delete`, `workspace:stats`, or `history`, together with any positional arguments and options.
+2. **Arguments are parsed in `src/index.js`.** The CLI entrypoint separates the command name, positional values, and named options such as `--content`, `--mode`, `--json`, and `--limit`.
+3. **The command and inputs are validated.** Command routing rejects unknown commands, while `src/utils/validator.js` checks required values, file names, content, write modes, numeric limits, supported extensions, and workspace-relative path safety.
+4. **System information is collected when reporting is requested.** `src/collectors/systemCollector.js` gathers operating system, CPU, memory, uptime, runtime, user, and allowlisted environment data, then calculates the System Health Score.
+5. **File CRUD requests are routed to the workspace manager.** `src/fileManager/fileCrudManager.js` handles create, read, append or overwrite update, and delete operations while enforcing the `workspace/` boundary and recording operation history.
+6. **Workspace analytics are generated.** Report and statistics flows recursively inspect managed files to calculate total size, code-file count, largest file, most recently modified file, and average file size.
+7. **Report data is formatted.** `src/utils/formatter.js` converts byte counts, durations, timestamps, health data, metadata, and analytics into structured tables and human-readable summaries. Long environment values are truncated only for console presentation.
+8. **JSON is exported when requested.** For commands using `--json`, the complete untruncated report is serialized with report metadata to a validated project-local path.
+9. **The error-handling layer protects the complete flow.** Validation and filesystem failures are normalized into actionable errors containing a title, reason, suggestion, and example command. Unexpected errors are caught at the CLI boundary and return a non-zero exit status.
+10. **Final output is generated.** Successful operations print professional console sections, metadata, summaries, and success logs; failures print structured guidance to standard error.
+
+### Flow Diagram
+
 ```text
-User Request
-      ↓
-CLI Argument Parsing
-      ↓
-Input Validation
-      ↓
-Workspace Boundary Enforcement
-      ↓
-System Information Collection
-      ↓
-CRUD Operation Processing
-      ↓
-Workspace Statistics Collection
-      ↓
-Data Formatting
-      ↓
-Console Output Generation
-      ↓
-Optional JSON Report Export
-      ↓
-Operation History Logging
+User Command
+     |
+     v
+Argument Parsing (src/index.js)
+     |
+     v
+Command and Input Validation
+     |
+     +--------> File CRUD Routing
+     |              |
+     |              v
+     |         Workspace Boundary Check
+     |              |
+     |              v
+     |         Operation History
+     |
+     +--------> System Information Collection
+     |              |
+     |              v
+     |         System Health Score
+     |
+     +--------> Workspace Analytics
+     |
+     v
+Report Formatting and Human-Readable Summary
+     |
+     +--------> JSON Export (Optional, Full Values)
+     |
+     v
+Final Console Output
+
+Any Stage
+     |
+     +--------> Error Handling Layer
+                     |
+                     v
+              Actionable Error Output
+              and Non-Zero Exit Status
 ```
 
 ## Usage
