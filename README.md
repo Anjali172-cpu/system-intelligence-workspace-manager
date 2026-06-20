@@ -148,11 +148,13 @@ npm run demo -- --json sample-output.json
 
 ## Smoke Testing
 
-Run the dependency-free smoke test to verify help, reporting, JSON export, CRUD operations, workspace statistics, and operation history:
+Run the dependency-free smoke test to verify help, reporting, JSON export, CRUD operations, workspace statistics, operation history, and error handling:
 
 ```bash
 npm run smoke:test
 ```
+
+The suite includes positive tests that must exit successfully and negative tests for missing files, missing arguments, path traversal, and unknown commands. Expected failures pass only when the CLI returns a non-zero status and displays an `[ERROR]` message.
 
 Each command is labeled `PASS` or `FAIL`. The runner continues through the full command sequence for useful diagnostics and exits with status code `1` if any check fails. It manages only the dedicated `workspace/smoke-test.js` fixture and writes its report to `outputs/smoke-report.json`.
 

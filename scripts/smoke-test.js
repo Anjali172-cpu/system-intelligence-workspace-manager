@@ -29,6 +29,14 @@ const commands = [
   ['node src/index.js delete smoke-test.js', ['src/index.js', 'delete', 'smoke-test.js']]
 ];
 
+const expectedFailureCommands = [
+  ['node src/index.js read missing.js', ['src/index.js', 'read', 'missing.js']],
+  ['node src/index.js create', ['src/index.js', 'create']],
+  ['node src/index.js update missing.js', ['src/index.js', 'update', 'missing.js']],
+  ['node src/index.js delete ../package.json', ['src/index.js', 'delete', '../package.json']],
+  ['node src/index.js unknowncommand', ['src/index.js', 'unknowncommand']]
+];
+
 function removeStaleFixture() {
   try {
     fs.rmSync(smokeFilePath, { force: true });
@@ -39,11 +47,7 @@ function removeStaleFixture() {
 }
 
 function runCommand(label, args) {
-  const result = spawnSync(process.execPath, args, {
-    cwd: projectRoot,
-    encoding: 'utf8',
-    env: process.env
-  });
+  const result = executeCommand(args);
 
   if (result.status === 0 && !result.error) {
     console.log(`[PASS] ${label}`);
@@ -68,13 +72,50 @@ function runCommand(label, args) {
   return false;
 }
 
+function runExpectedFailure(label, args) {
+  const result = executeCommand(args);
+  const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+  const exitedWithFailure = typeof result.status === 'number' && result.status !== 0;
+  const containsErrorMessage = /\[ERROR\]\s+\S+/.test(output);
+
+  if (!result.error && exitedWithFailure && containsErrorMessage) {
+    console.log(`[PASS] expected failure: ${label}`);
+    return true;
+  }
+
+  if (!exitedWithFailure) {
+    console.error(`[FAIL] expected failure did not fail: ${label}`);
+  } else if (!containsErrorMessage) {
+    console.error(`[FAIL] expected failure did not show an error message: ${label}`);
+  } else {
+    console.error(`[FAIL] expected failure could not run: ${label}`);
+  }
+
+  console.error(`Exit code: ${result.status ?? 'Not Available'}`);
+  if (result.error) {
+    console.error(`Reason: ${result.error.message}`);
+  }
+
+  return false;
+}
+
+function executeCommand(args) {
+  return spawnSync(process.execPath, args, {
+    cwd: projectRoot,
+    encoding: 'utf8',
+    env: process.env
+  });
+}
+
 removeStaleFixture();
 
 console.log('Running CLI smoke tests...\n');
-const results = commands.map(([label, args]) => runCommand(label, args));
+const positiveResults = commands.map(([label, args]) => runCommand(label, args));
+console.log('\nRunning expected-failure smoke tests...\n');
+const negativeResults = expectedFailureCommands.map(([label, args]) => runExpectedFailure(label, args));
+const results = [...positiveResults, ...negativeResults];
 const passed = results.filter(Boolean).length;
 const failed = results.length - passed;
 
 console.log(`\nSmoke test summary: ${passed} passed, ${failed} failed.`);
 process.exitCode = failed > 0 ? 1 : 0;
-

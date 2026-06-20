@@ -1,10 +1,10 @@
 {
   "reportMetadata": {
-    "reportId": "995f7086-4784-46c5-ba7a-c1addbbd00af",
-    "generatedTimestamp": "2026-06-20T13:08:12.178Z",
+    "reportId": "96d779c3-73dd-4a75-ba90-ed5a0ebcb154",
+    "generatedTimestamp": "2026-06-20T13:13:27.799Z",
     "cliVersion": "1.0.0"
   },
-  "generatedAt": "2026-06-20T13:08:12.178Z",
+  "generatedAt": "2026-06-20T13:13:27.799Z",
   "systemInfo": {
     "osType": "Darwin",
     "osRelease": "24.5.0",
@@ -15,9 +15,9 @@
     "platform": "darwin",
     "homeDirectory": "/Users/anjali",
     "currentUser": "anjali",
-    "systemUptime": "0d 23h 35m",
+    "systemUptime": "0d 23h 40m",
     "totalMemory": "16 GB",
-    "freeMemory": "655 MB"
+    "freeMemory": "712 MB"
   },
   "environmentVariables": {
     "PATH": "/Users/anjali/Documents/Codex/2026-06-20/you-are-a-senior-node-js/node_modules/.bin:/Users/anjali/Documents/Codex/2026-06-20/node_modules/.bin:/Users/anjali/Documents/Codex/node_modules/.bin:/Users/anjali/Documents/node_modules/.bin:/Users/anjali/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin",
@@ -30,9 +30,9 @@
     "status": "Critical",
     "memory": {
       "totalBytes": 17179869184,
-      "freeBytes": 686522368,
-      "usedBytes": 16493346816,
-      "usedPercentage": 96,
+      "freeBytes": 746684416,
+      "usedBytes": 16433184768,
+      "usedPercentage": 95.65,
       "status": "Critical Usage"
     },
     "cpu": {
@@ -41,10 +41,10 @@
     }
   },
   "systemHealthScore": {
-    "score": 40,
+    "score": 42,
     "category": "Poor",
     "components": {
-      "memoryScore": 20,
+      "memoryScore": 22,
       "uptimeScore": 100,
       "uptimeAvailable": true
     }
