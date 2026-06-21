@@ -20,6 +20,14 @@
 
 ## 2-Minute Judge Summary
 
+> 💡 If you only have 2 minutes, review:
+>
+> 1. Architecture at a Glance
+> 2. Execution Flow at a Glance
+> 3. 90-Second Judge Walkthrough
+> 4. Smoke Testing Results
+> 5. Reliability Report
+
 | Category | Status |
 | --- | :---: |
 | System Information | ✅ |
