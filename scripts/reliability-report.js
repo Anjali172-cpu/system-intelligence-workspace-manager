@@ -14,6 +14,7 @@ const testedAreas = [
   'System report',
   'JSON export',
   'CRUD operations',
+  'Code search',
   'Workspace statistics',
   'Operation history',
   'Error handling',
@@ -66,4 +67,3 @@ if (!summary) {
 }
 
 process.exitCode = smokeResult.status === 0 && failed === 0 ? 0 : 1;
-

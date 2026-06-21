@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-20T13:21:59.003Z",
-  "totalTests": 14,
-  "passed": 14,
+  "generatedAt": "2026-06-21T15:53:33.368Z",
+  "totalTests": 16,
+  "passed": 16,
   "failed": 0,
   "reliabilityScore": 100,
   "testedAreas": [
@@ -9,6 +9,7 @@
     "System report",
     "JSON export",
     "CRUD operations",
+    "Code search",
     "Workspace statistics",
     "Operation history",
     "Error handling",

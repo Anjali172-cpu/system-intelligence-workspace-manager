@@ -43,7 +43,8 @@
 
 | Requirement | Delivered | Status |
 | --- | --- | :---: |
-| System intelligence | OS, CPU, runtime, user, uptime, and memory | ✅ |
+| JavaScript runtime | Modern JavaScript with Node.js 18+ and ES modules | ✅ |
+| System intelligence | OS type/release, CPU architecture, hostname, Node.js version, platform, home directory, user, uptime, and memory | ✅ |
 | Safe environment data | Allowlisted variables with console truncation only | ✅ |
 | Workspace CRUD | Create, read, append/overwrite, and delete | ✅ |
 | File metadata | Size, creation time, modification time, and paths | ✅ |
@@ -57,7 +58,7 @@
 
 | Criterion | Evidence | Status |
 | --- | --- | :---: |
-| Correctness | 16 positive and expected-failure smoke tests | ✅ |
+| Correctness | 16 positive and expected-failure smoke tests, including verified search output | ✅ |
 | Code quality | Modular ES modules, async APIs, JSDoc, reusable helpers | ✅ |
 | Security | Workspace confinement and traversal prevention | ✅ |
 | Error handling | Title, reason, suggestion, example, and exit code `1` | ✅ |
@@ -122,6 +123,22 @@ flowchart TD
 | `workspace:stats` | File listing and aggregate statistics | `node src/index.js workspace:stats` |
 | `history --limit <n>` | Recent operation audit trail | `node src/index.js history --limit 10` |
 | `demo [--json]` | Safe end-to-end demonstration | `node src/index.js demo --json sample-output.json` |
+
+---
+
+## 90-Second Judge Walkthrough
+
+| Step | Run | What It Proves |
+| :---: | --- | --- |
+| 1 | `node src/index.js report` | System intelligence, health score, metadata, and workspace analytics |
+| 2 | `node src/index.js create judge-demo.js --content "console.log('ready')"` | Validated workspace-only file creation |
+| 3 | `node src/index.js search READY` | Case-insensitive code search with file path and line number |
+| 4 | `node src/index.js report --json outputs/judge-report.json` | Full structured JSON export with untruncated values |
+| 5 | `npm run smoke:test` | 16 positive and negative behavior checks |
+| 6 | `npm run reliability:report` | Machine-readable reliability score and tested-area coverage |
+| Cleanup | `node src/index.js delete judge-demo.js` | Safe, auditable deletion inside the workspace |
+
+> **No setup ceremony:** Node.js 18+ is the only requirement. There are no third-party runtime dependencies or database services.
 
 ---
 

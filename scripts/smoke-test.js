@@ -24,7 +24,7 @@ const commands = [
     'node src/index.js update smoke-test.js --content "\\nconsole.log(\'updated\')"',
     ['src/index.js', 'update', 'smoke-test.js', '--content', "\nconsole.log('updated')"]
   ],
-  ['node src/index.js search smoke', ['src/index.js', 'search', 'smoke']],
+  ['node src/index.js search smoke', ['src/index.js', 'search', 'smoke'], 'smoke-test.js'],
   ['node src/index.js workspace:stats', ['src/index.js', 'workspace:stats']],
   ['node src/index.js history --limit 5', ['src/index.js', 'history', '--limit', '5']],
   ['node src/index.js delete smoke-test.js', ['src/index.js', 'delete', 'smoke-test.js']]
@@ -48,10 +48,12 @@ function removeStaleFixture() {
   }
 }
 
-function runCommand(label, args) {
+function runCommand(label, args, expectedOutput) {
   const result = executeCommand(args);
+  const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+  const outputMatches = !expectedOutput || output.includes(expectedOutput);
 
-  if (result.status === 0 && !result.error) {
+  if (result.status === 0 && !result.error && outputMatches) {
     console.log(`[PASS] ${label}`);
     return true;
   }
@@ -61,6 +63,10 @@ function runCommand(label, args) {
 
   if (result.error) {
     console.error(`Reason: ${result.error.message}`);
+  }
+
+  if (!outputMatches) {
+    console.error(`Expected output was not found: ${expectedOutput}`);
   }
 
   if (result.stdout?.trim()) {
@@ -112,7 +118,7 @@ function executeCommand(args) {
 removeStaleFixture();
 
 console.log('Running CLI smoke tests...\n');
-const positiveResults = commands.map(([label, args]) => runCommand(label, args));
+const positiveResults = commands.map(([label, args, expectedOutput]) => runCommand(label, args, expectedOutput));
 console.log('\nRunning expected-failure smoke tests...\n');
 const negativeResults = expectedFailureCommands.map(([label, args]) => runExpectedFailure(label, args));
 const results = [...positiveResults, ...negativeResults];
