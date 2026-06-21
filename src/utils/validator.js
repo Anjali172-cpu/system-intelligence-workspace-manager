@@ -74,9 +74,14 @@ export function validateWorkspaceFilePath(inputPath) {
 
   const normalized = path.normalize(rawPath);
 
-  if (normalized === '.' || normalized.startsWith('..') || path.isAbsolute(normalized)) {
-    throw invalidWorkspacePathError(rawPath);
-  }
+  if (extension && !CODE_FILE_EXTENSIONS.has(extension)) {
+  throw new CliError(
+    'Unsupported File Extension',
+    `The extension "${extension}" is not supported. Allowed extensions: ${[...CODE_FILE_EXTENSIONS].sort().join(', ')}.`,
+    'Use a supported code or text file extension inside the workspace.',
+    'node src/index.js create app.js --content "console.log(\'hello\')"'
+  );
+}
 
   const extension = path.extname(normalized).toLowerCase();
   if (extension && !CODE_FILE_EXTENSIONS.has(extension)) {
@@ -171,7 +176,12 @@ export function validateWriteMode(mode = 'append') {
   const normalized = String(mode).trim().toLowerCase();
 
   if (!['append', 'overwrite'].includes(normalized)) {
-    throw new Error('Write mode must be either "append" or "overwrite".');
+    throw new CliError(
+  'Invalid Write Mode',
+  'The write mode must be either "append" or "overwrite".',
+  'Use a supported write mode.',
+  'node src/index.js update app.js --mode append --content "console.log(\'updated\')"'
+);
   }
 
   return normalized;
@@ -200,8 +210,13 @@ export function parsePositiveInteger(value, fallback) {
 
   const parsed = Number.parseInt(value, 10);
   if (!Number.isFinite(parsed) || parsed < 1) {
-    throw new Error('Limit must be a positive integer.');
-  }
+  throw new CliError(
+    'Invalid Limit',
+    'The limit value must be a positive integer greater than zero.',
+    'Provide a numeric limit such as 5, 10, or 20.',
+    'node src/index.js history --limit 10'
+  );
+}
 
   return parsed;
 }
