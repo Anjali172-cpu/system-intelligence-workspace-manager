@@ -228,39 +228,44 @@ project/
 
 ## Code Flow
 
-```text
-User Command
-      │
-      ▼
-Validation Layer
-      │
-      ▼
-System Collector / File Manager
-      │
-      ▼
-Analytics Engine
-      │
-      ▼
-Formatter
-      │
-      ▼
-Console Output / JSON Export
+### Step-by-Step Execution
 
-Simple command flow from input validation to report generation.
+1. **User command:** the user invokes a report, CRUD, search, statistics, history, demo, or help command.
+2. **Argument parsing:** `src/index.js` separates the command, positional arguments, and named options.
+3. **Validation:** command existence, required values, modes, extensions, limits, search terms, and paths are checked.
+4. **System collection:** report flows gather operating system, runtime, user, environment, CPU, uptime, and memory data.
+5. **CRUD routing:** file commands are delegated to `FileCrudManager`, which enforces the workspace boundary.
+6. **Analytics:** system health and workspace insights are calculated from collected data and file metadata.
+7. **Formatting:** formatter utilities create tables, metadata sections, and readable summaries.
+8. **Optional export:** `--json` writes the complete structured report to a validated project-local path.
+9. **Error layer:** validation and filesystem failures become actionable messages with non-zero exit status.
+10. **Final output:** successful results reach the console; CRUD operations are also recorded in history.
+
+The **Execution Flow at a Glance** diagram above shows these routes and their shared error boundary.
 
 ---
 
 ## Strategy
 
+| Concern | Strategy |
+| --- | --- |
+| Architecture | Separate orchestration, collection, file management, validation, formatting, and logging |
+| Error handling | Normalize expected failures close to their source; catch unexpected failures at the CLI boundary |
+| Security | Confine files to `workspace/`, reject traversal/absolute paths, skip symlinks in scans, and allowlist environment fields |
+| Scalability | Recursive workspace support and replaceable modules allow new collectors, exporters, and policies |
+| Portability | Use Node.js built-ins only; avoid databases and platform-specific dependencies |
+| Observability | Timestamp logs, persist operation history, identify reports with UUIDs, and calculate reliability |
 
-| Area | Approach |
-|------|----------|
-| Architecture | Modular design |
-| Security | Workspace-only file access |
-| Error Handling | Validation + actionable messages |
-| Reliability | Smoke tests + reliability report |
+> **Security boundary:** file CRUD and search operate only on workspace-relative paths. JSON export and content import are constrained to project-local paths.
 
-> Focused on security, reliability, maintainability, and clear CLI feedback.
+### Major Implementation Decisions
+
+- **No external dependencies:** improves auditability, portability, and hackathon reliability.
+- **ES modules and async filesystem APIs:** align with modern Node.js development.
+- **Private manager helpers:** keep traversal and filesystem details encapsulated.
+- **JSON-lines history:** supports efficient append, inspection, parsing, and streaming.
+- **Safe environment allowlist:** avoids accidental collection of tokens, credentials, and unrelated secrets.
+- **Additive CLI evolution:** new commands do not alter existing CRUD behavior or command names.
 
 ---
 
@@ -268,25 +273,30 @@ Simple command flow from input validation to report generation.
 
 ### System Health Score
 
-| Metric | Weight |
-|---------|---------|
-| Environment Variables | 30% |
-| CPU Information | 25% |
-| Memory Information | 25% |
-| Platform Information | 20% |
+The score is transparent and bounded from 0 to 100.
 
-> Final score is normalized to a 0–100 range.
+| Component | Weight | Interpretation |
+| --- | ---: | --- |
+| Memory score | 75% | Lower memory pressure scores higher; penalties increase above 75%, 85%, and 95% usage |
+| Uptime score | 25% | Shorter maintenance intervals score higher; long uninterrupted uptime gradually lowers the component |
+| Missing uptime | Neutral 70 | Used only when the OS restricts uptime access; JSON sets `uptimeAvailable: false` |
 
-> Score bands: Excellent, Good, Fair, Poor, and Critical.
+| Final Score | Category |
+| ---: | --- |
+| 90–100 | Excellent |
+| 75–89 | Good |
+| 60–74 | Fair |
+| 40–59 | Poor |
+| 0–39 | Critical |
 
 ### Workspace Insights
 
-| Insight | Meaning |
-|----------|----------|
-| Recent File | Latest modified file |
-| Largest File | Highest file size |
-| Average Size | Average managed file size |
-| Code Files | Total supported code files |
+| Insight | Calculation |
+| --- | --- |
+| Most recently modified file | Latest file modification timestamp |
+| Largest file | Greatest byte size |
+| Average file size | Total managed bytes divided by managed file count |
+| Total code files | Files matching the supported code-extension allowlist |
 
 ### Report Metadata
 
@@ -296,26 +306,36 @@ Every report includes a UUID `reportId`, ISO 8601 `generatedTimestamp`, and `cli
 
 ## Collected Data Explanation
 
-| Field Group | Purpose |
-|------------|---------|
-| OS & Platform | Operating system details |
-| CPU | Architecture and processor information |
-| Memory | System memory statistics |
-| User Context | Hostname, user, and home directory |
-| Runtime | Node.js version and platform |
-| Environment | Selected environment variables |
-
-> Only safe, predefined environment variables are collected.
+| Field | Meaning | Engineering Value |
+| --- | --- | --- |
+| OS Type | Operating system family | Compatibility and host classification |
+| OS Release | Kernel or operating system release | OS-specific debugging |
+| CPU Architecture | Processor architecture such as `arm64` or `x64` | Binary compatibility |
+| CPU Core Count | Logical processor count | Parallel workload planning |
+| Hostname | Machine network name | Report origin identification |
+| Node Version | Active Node.js runtime | API and syntax compatibility |
+| Platform | Node.js platform identifier | Platform-specific scripting |
+| Home Directory | Current user home path | Filesystem context |
+| Current User | Process owner username | Audit and permission diagnosis |
+| System Uptime | Time since system start | Restart and maintenance context |
+| Total Memory | Installed system memory | Capacity baseline |
+| Free Memory | Currently available memory | Resource-pressure analysis |
+| `PATH` | Executable search path | Command-resolution debugging |
+| `HOME` | Home environment variable | Tooling context |
+| `USER` | User environment variable | Shell and CI diagnosis |
+| `SHELL` | Active shell path | Command behavior reproduction |
+| `TEMP` | Temporary directory setting | Temporary-file diagnosis |
 
 ---
 
 ## Error Handling Strategy
 
-All validation errors provide:
-- Error title
-- Failure reason
-- Recovery suggestion
-- Working example command
+Every expected failure contains four actionable elements and exits with status code `1`:
+
+> **Error title**  
+> **Reason:** why the operation failed  
+> **Suggestion:** how to recover  
+> **Example:** a valid command to try
 
 ### Handled Conditions
 
@@ -330,13 +350,21 @@ All validation errors provide:
 
 ### Error Handling Examples
 
-| Scenario | Example Error |
-|-----------|--------------|
-| Missing File | File Not Found |
-| Invalid Path | Invalid Workspace Path |
-| Empty Content | Empty Content |
-| Invalid Search | Missing Search Keyword |
-| Invalid Command | Unknown Command |
+| Scenario | Error Title | Recovery Example |
+| --- | --- | --- |
+| Missing file name | `Missing File Name` | `node src/index.js read app.js` |
+| Empty content | `Empty Content` | `node src/index.js update app.js --content "console.log('updated')"` |
+| Missing file | `File Not Found: missing.js` | `node src/index.js create missing.js --content "console.log('hello')"` |
+| Path traversal | `Invalid Workspace Path` | `node src/index.js create src/app.js --content "console.log('safe')"` |
+| Empty search | `Missing Search Keyword` | `node src/index.js search console` |
+| Unknown command | `Invalid Command: launch` | `node src/index.js help` |
+
+```text
+[ERROR] File Not Found: missing.js
+Reason: The file cannot be updated because it does not exist inside the workspace.
+Suggestion: Create the file first, then retry the operation.
+Example: node src/index.js create missing.js --content "console.log('hello')"
+```
 
 ---
 
@@ -346,12 +374,28 @@ All validation errors provide:
 npm run smoke:test
 ```
 
+The dependency-free runner executes all checks through `child_process`, labels each command `PASS` or `FAIL`, continues for complete diagnostics, and exits with code `1` if any condition fails. Expected failures pass only when the CLI returns non-zero status and emits an `[ERROR]` message.
+
 ### Testing Results
 
-| Metric | Value |
+| Test Group | Tests | Result |
+| --- | ---: | --- |
+| Positive commands | 10 | 10 passed |
+| Expected failures | 6 | 6 passed |
+| Total | 16 | **16 passed, 0 failed** |
+| Reliability score | — | **100%** |
+
+| Tested Area | Evidence |
 | --- | --- |
-| Tests | 16/16 Passed |
-| Reliability | 100% |
+| Help command | `--help` exits successfully |
+| System report | Console report completes |
+| JSON export | `outputs/smoke-report.json` is generated |
+| CRUD operations | Create, read, update, and delete pass sequentially |
+| Search | Positive keyword search and missing-keyword failure pass |
+| Workspace statistics | Statistics command completes against fixture |
+| Operation history | Recent history is readable |
+| Error handling | Missing files, arguments, and unknown commands fail correctly |
+| Path safety | Traversal attempt is rejected |
 
 ---
 
@@ -360,48 +404,87 @@ npm run smoke:test
 ```bash
 npm run reliability:report
 ```
-Generates a reliability dashboard and exports
-`outputs/reliability-report.json`.
 
-| Metric | Value |
+The command runs the complete smoke suite, prints a project reliability dashboard, and writes `outputs/reliability-report.json` with:
+
+| Field | Purpose |
 | --- | --- |
-| Tests | 16 |
-| Reliability | 100% |
+| `generatedAt` | ISO timestamp for the reliability run |
+| `totalTests` | Number of executed smoke checks |
+| `passed` / `failed` | Outcome counts |
+| `reliabilityScore` | Passed tests as a percentage of total tests |
+| `testedAreas` | High-level capability coverage |
 
-> Failed tests return a non-zero exit code.
+> A failed smoke test produces a non-zero reliability-report exit status, making the command suitable for CI quality gates.
 
 ---
 
 ## Sample Output
 
-```json
-{
-  "systemHealthScore": 82,
-  "workspaceFiles": 1,
-  "reliability": 100,
-  "generated": true
-}
+```text
+================================================
+   Report Metadata
+================================================
+Report ID             34e0d35f-9b2b-4692-9790-451eaf648405
+Generated Timestamp   2026-06-20T09:56:05.072Z
+CLI Version           1.0.0
+
+================================================
+   System Health Score
+================================================
+Score                 82/100
+Category              Good
+Memory Component      80/100
+Uptime Component      90/100
+
+================================================
+   Workspace Insights
+================================================
+Most Recently Modified  app.js
+Largest File            app.js
+Average File Size       136 B
+Total Code Files        1
+
+================================================
+   Human-Readable Summary
+================================================
+- Host developer-machine.local is running Darwin on arm64.
+- System health score is 82/100 (Good); memory usage is 72%.
+- Workspace contains 1 code file(s), using 136 B.
 ```
+
 > Console environment values longer than 80 characters end with `... [truncated]`. JSON export always contains the full values.
 
 ## JSON Report Export
 
-```json
-{
-  "reportMetadata": {},
-  "systemInfo": {},
-  "environmentVariables": {},
-  "healthSummary": {}
-}
+| Top-Level Property | Content |
+| --- | --- |
+| `reportMetadata` | Report ID, generated timestamp, and CLI version |
+| `generatedAt` | Backward-compatible report timestamp |
+| `systemInfo` | Host, OS, runtime, CPU, uptime, and memory information |
+| `environmentVariables` | Full allowlisted environment values |
+| `healthSummary` | Memory and CPU analysis |
+| `systemHealthScore` | Final score, category, and component scores |
+| `workspaceStatistics` | File listing and aggregate size metadata |
+| `workspaceInsights` | Newest, largest, average size, and code-file count |
+
+```bash
+node src/index.js report --json outputs/report.json
 ```
 
 ---
 
 ## Future Improvements
 
-- Additional unit tests
-- Configurable report formats
-- Extended workspace analytics
+- Add focused unit and integration tests with Node.js's built-in test runner.
+- Add interactive prompts for guided workspace operations.
+- Add syntax-aware search context and language statistics.
+- Add workspace snapshots and restore points.
+- Add configurable extension policies.
+- Add HTML report generation and comparison views.
+- Add watch mode for continuous system and workspace monitoring.
+- Add a CI workflow that uses the reliability report as a quality gate.
+
 ---
 
 ## License
