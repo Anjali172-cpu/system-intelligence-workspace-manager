@@ -226,7 +226,6 @@ project/
 
 ---
 
-## Code Flow
 
 ## 🔄 Code Flow
 
@@ -255,8 +254,6 @@ Simple command flow from input validation to report generation.
 
 ---
 
-## Strategy
-
 ## 🎯 Strategy
 
 | Area | Design Choice |
@@ -270,81 +267,96 @@ Simple command flow from input validation to report generation.
 > Focused on security, reliability, maintainability, and clear CLI feedback.
 
 ---
-
-## Analytics Model
+## 📊 Analytics Model
 
 ### System Health Score
 
-| Metric | Weight |
-|---------|---------|
-| Environment Variables | 30% |
-| CPU Information | 25% |
-| Memory Information | 25% |
-| Platform Information | 20% |
+```text
+Environment Variables  ██████ 30%
+CPU Information        █████  25%
+Memory Information     █████  25%
+Platform Information   ████   20%
+```
 
-> Final score is normalized to a 0–100 range.
+| Score | Status |
+|--------|--------|
+| 90-100 | 🟢 Excellent |
+| 75-89  | 🟢 Good |
+| 60-74  | 🟡 Fair |
+| 40-59  | 🟠 Poor |
+| 0-39   | 🔴 Critical |
 
 > Score bands: Excellent, Good, Fair, Poor, and Critical.
 
-### Workspace Insights
+### 📂 Workspace Insights
 
-| Insight | Meaning |
-|----------|----------|
-| Recent File | Latest modified file |
-| Largest File | Highest file size |
-| Average Size | Average managed file size |
-| Code Files | Total supported code files |
+| Metric | Description |
+|---------|-------------|
+| 🕒 Recent File | Latest modified file |
+| 📦 Largest File | Highest file size |
+| 📊 Average Size | Average managed file size |
+| 💻 Code Files | Total supported code files |
 
+> 🔒 Only safe, predefined environment variables are collected.
 ### Report Metadata
 
 Every report includes a UUID `reportId`, ISO 8601 `generatedTimestamp`, and `cliVersion` loaded from `package.json`. This makes exports traceable and comparable across executions and releases.
 
 ---
 
-## Collected Data Explanation
+## 📋 Collected Data Explanation
 
-| Field Group | Purpose |
-|------------|---------|
-| OS & Platform | Operating system details |
-| CPU | Architecture and processor information |
-| Memory | System memory statistics |
-| User Context | Hostname, user, and home directory |
-| Runtime | Node.js version and platform |
-| Environment | Selected environment variables |
+| Category | Data Collected |
+|-----------|---------------|
+| 🖥️ OS & Platform | OS type, release, platform |
+| ⚙️ CPU | Architecture, processor details |
+| 🧠 Memory | Total and available memory |
+| 👤 User Context | Hostname, user, home directory |
+| 🚀 Runtime | Node.js version and runtime info |
+| 🌍 Environment | Selected safe environment variables |
 
-> Only safe, predefined environment variables are collected.
-
+> 🔒 Sensitive values are never collected. Only predefined safe variables are included.
 ---
 
-## Error Handling Strategy
+### 🛡️ Error Response Structure
 
-All validation errors provide:
-- Error title
-- Failure reason
-- Recovery suggestion
-- Working example command
+| Element | Purpose |
+|----------|----------|
+| ❌ Error Title | Clear problem identification |
+| 🔍 Reason | Why the operation failed |
+| 💡 Recovery | Suggested corrective action |
+| 🧪 Example | Valid command example |
+
+> Every error message is designed to be actionable and beginner-friendly.
 
 ### Handled Conditions
+| Status | Condition | Handling |
+|---------|-----------|-----------|
+| ✅ | Missing Input | Clear validation message |
+| ✅ | Invalid Arguments | Input verification |
+| ✅ | File Not Found | Recovery guidance |
+| ✅ | Duplicate Creation | Safe rejection |
+| ✅ | Workspace Escape Attempt | Blocked by validator |
+| ✅ | Missing Environment Variable | Reported as "Not Available" |
+| ✅ | Runtime Exception | Top-level error boundary |
+| ✅ | Unknown Command | Help suggestion provided |
 
-| Category | Examples |
-| --- | --- |
-| Missing input | File name, search keyword, content, or option value omitted |
-| Invalid input | Empty content, unsupported mode/extension, or invalid history limit |
-| Filesystem | Missing file, duplicate create, permission failure, or non-file path |
-| Path safety | Absolute path, `..` traversal, external search target, or export outside project |
-| Environment | Missing allowlisted variable becomes `Not Available` |
-| Runtime | Unexpected errors are caught at the top-level boundary |
-
+> All failures are deterministic and return actionable feedback.
 ### Error Handling Examples
+<details>
+<summary><b>📋 Error Scenario Reference</b></summary>
 
-| Scenario | Example Error |
-|-----------|--------------|
-| Missing File | File Not Found |
-| Invalid Path | Invalid Workspace Path |
-| Empty Content | Empty Content |
-| Invalid Search | Missing Search Keyword |
-| Invalid Command | Unknown Command |
+<br>
 
+| Scenario | Returned Error |
+|----------|----------------|
+| 📄 Missing File | File Not Found |
+| 🚫 Invalid Path | Invalid Workspace Path |
+| 📝 Empty Content | Empty Content |
+| 🔍 Missing Search Term | Missing Search Keyword |
+| ⚙️ Unknown Command | Unknown Command |
+
+</details>
 ---
 
 ## Smoke Testing
