@@ -228,23 +228,28 @@ project/
 
 ## Code Flow
 
-```text
-User Command
-      │
-      ▼
-Validation Layer
-      │
-      ▼
-System Collector / File Manager
-      │
-      ▼
-Analytics Engine
-      │
-      ▼
-Formatter
-      │
-      ▼
-Console Output / JSON Export
+## 🔄 Code Flow
+
+```mermaid
+flowchart TD
+    A[👤 User Command]
+    B[✅ Validation Layer]
+    C[📂 File Manager]
+    D[🖥️ System Collector]
+    E[📊 Analytics Engine]
+    F[📝 Formatter]
+    G[📤 Console Output]
+    H[📄 JSON Export]
+
+    A --> B
+    B --> C
+    B --> D
+    C --> E
+    D --> E
+    E --> F
+    F --> G
+    F --> H
+```
 
 Simple command flow from input validation to report generation.
 
@@ -252,13 +257,15 @@ Simple command flow from input validation to report generation.
 
 ## Strategy
 
+## 🎯 Strategy
 
-| Area | Approach |
-|------|----------|
-| Architecture | Modular design |
-| Security | Workspace-only file access |
-| Error Handling | Validation + actionable messages |
-| Reliability | Smoke tests + reliability report |
+| Area | Design Choice |
+|--------|-------------|
+| 🏗 Architecture | Modular components |
+| 🔒 Security | Workspace-only access |
+| ⚡ Reliability | Smoke-tested workflows |
+| 🛡 Error Handling | Actionable recovery messages |
+| 📦 Dependencies | Zero external packages |
 
 > Focused on security, reliability, maintainability, and clear CLI feedback.
 
