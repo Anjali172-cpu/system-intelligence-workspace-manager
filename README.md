@@ -1,5 +1,7 @@
 <div align="center">
-
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=36BCF7&center=true&vCenter=true&width=900&lines=System+Intelligence+%26+Code+Workspace+Manager;System+Information+Collector;Workspace+CRUD+Engine;Analytics+%26+Reliability+Reporting" />
+</p>
 # System Intelligence & Code Workspace Manager
 
 **System diagnostics, secure code workspace management, analytics, and reliability in one dependency-free Node.js CLI.**
